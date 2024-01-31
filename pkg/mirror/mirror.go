@@ -7,58 +7,28 @@ import (
 	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing/transport"
 	"github.com/go-git/go-git/v5/storage/memory"
-	"github.com/jyny/mirror/pkg/logger"
+	"github.com/jyny/mirror-action/pkg/logger"
 )
 
 const (
-	MirrorRemote = "mirror"
+	MirrorRemoteName = "mirror"
 )
 
 type Mirror struct {
-	srcRepoURL string
-	srcAuth    transport.AuthMethod
-	dstRepoURL string
-	dstAuth    transport.AuthMethod
-	logger     logger.Logger
-}
-
-type MirrorConfig struct {
-	SrcRepoURL string
-	SrcAuth    transport.AuthMethod
-	DstRepoURL string
-	DstAuth    transport.AuthMethod
-	Logger     logger.Logger
-}
-
-func New(cfg *MirrorConfig) *Mirror {
-	return &Mirror{
-		srcRepoURL: cfg.SrcRepoURL,
-		srcAuth:    cfg.SrcAuth,
-		dstRepoURL: cfg.DstRepoURL,
-		dstAuth:    cfg.DstAuth,
-		logger:     cfg.Logger,
-	}
+	srcRemote string
+	srcAuth   transport.AuthMethod
+	dstRemote string
+	dstAuth   transport.AuthMethod
+	logger    logger.Logger
 }
 
 func (m *Mirror) Run() error {
 	m.logger.Info("Start mirroring...")
 	defer m.logger.Info("End mirroring...")
 
-	if m.srcRepoURL == "" {
-		m.logger.Error("validate src_repo_url", "err", ErrEmptySrcRepoURL)
-		return ErrEmptySrcRepoURL
-	}
-	m.logger.Debug("Source:", "repo", m.srcRepoURL)
-
-	if m.dstRepoURL == "" {
-		m.logger.Error("validate dst_repo_url", "err", ErrEmptyDstRepoURL)
-		return ErrEmptyDstRepoURL
-	}
-	m.logger.Debug("Destination:", "repo", m.dstRepoURL)
-
 	m.logger.Info("Cloning source repository...")
 	srcRepo, err := git.Clone(memory.NewStorage(), nil, &git.CloneOptions{
-		URL:      m.srcRepoURL,
+		URL:      m.srcRemote,
 		Auth:     m.srcAuth,
 		Progress: m.logger,
 		Mirror:   true,
@@ -69,8 +39,8 @@ func (m *Mirror) Run() error {
 	}
 
 	_, err = srcRepo.CreateRemote(&config.RemoteConfig{
-		Name: MirrorRemote,
-		URLs: []string{m.dstRepoURL},
+		Name: MirrorRemoteName,
+		URLs: []string{m.dstRemote},
 	})
 	if err != nil {
 		m.logger.Error("failed to create remote", "err", err)
@@ -79,7 +49,7 @@ func (m *Mirror) Run() error {
 
 	m.logger.Info("Pushing to destination repository...")
 	err = srcRepo.Push(&git.PushOptions{
-		RemoteName: MirrorRemote,
+		RemoteName: MirrorRemoteName,
 		Auth:       m.dstAuth,
 		Progress:   m.logger,
 		RefSpecs: []config.RefSpec{

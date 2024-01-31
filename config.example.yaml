@@ -1,9 +1,0 @@
-mirror_configs:
-  - env_src_repo_url: "first_src_repo_url"
-    env_src_ssh_key: "first_src_ssh_key"
-    env_dst_repo_url: "first_dst_repo_url"
-    env_dst_ssh_key: "first_dst_ssh_key"
-  - env_src_repo_url: "second_src_repo_url"
-    env_src_ssh_key: "second_src_ssh_key"
-    env_dst_repo_url: "second_dst_repo_url"
-    env_dst_ssh_key: "second_dst_ssh_key"

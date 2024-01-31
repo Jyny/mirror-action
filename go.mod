@@ -1,12 +1,12 @@
-module github.com/jyny/mirror
+module github.com/jyny/mirror-action
 
 go 1.21.6
 
 require (
+	github.com/caarlos0/env v3.5.0+incompatible
 	github.com/charmbracelet/log v0.3.1
 	github.com/go-git/go-git/v5 v5.11.0
 	golang.org/x/crypto v0.17.0
-	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (

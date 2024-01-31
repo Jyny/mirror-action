@@ -3,6 +3,5 @@ package mirror
 import "errors"
 
 var (
-	ErrEmptySrcRepoURL = errors.New("source repository ur is required")
-	ErrEmptyDstRepoURL = errors.New("destination repository url is required")
+	ErrInvalidGitRemoteURL = errors.New("invalid git remote url")
 )

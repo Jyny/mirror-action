@@ -9,8 +9,22 @@ import (
 	"github.com/charmbracelet/log"
 )
 
+const (
+	// DebugLevel is the debug level.
+	DebugLevel = log.DebugLevel
+	// InfoLevel is the info level.
+	InfoLevel = log.InfoLevel
+	// WarnLevel is the warn level.
+	WarnLevel = log.WarnLevel
+	// ErrorLevel is the error level.
+	ErrorLevel = log.ErrorLevel
+	// FatalLevel is the fatal level.
+	FatalLevel = log.FatalLevel
+)
+
 type Logger interface {
 	io.Writer
+	SetLevel(level log.Level)
 	Debug(msg interface{}, keyvals ...interface{})
 	Info(msg interface{}, keyvals ...interface{})
 	Warn(msg interface{}, keyvals ...interface{})
@@ -24,9 +38,10 @@ type LoggerWthWriter struct {
 	lock sync.Mutex
 }
 
-func New(writer io.Writer) *LoggerWthWriter {
+func New(writer io.Writer, level log.Level) *LoggerWthWriter {
 	logger := log.NewWithOptions(writer, log.Options{
 		ReportTimestamp: true,
+		Level:           level,
 	})
 	return &LoggerWthWriter{
 		writer,

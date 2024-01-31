@@ -1,54 +1,56 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
-	"github.com/jyny/mirror/pkg/config"
-	"github.com/jyny/mirror/pkg/logger"
-	"github.com/jyny/mirror/pkg/mirror"
-	"gopkg.in/yaml.v3"
+	"github.com/caarlos0/env"
+	"github.com/jyny/mirror-action/pkg/config"
+	"github.com/jyny/mirror-action/pkg/logger"
+	"github.com/jyny/mirror-action/pkg/mirror"
 )
 
 var (
-	appConfig   config.Config
-	appLogger   logger.Logger
-	mirrorTasks []*mirror.Mirror
-	errOccurred bool
+	appLogger logger.Logger
+	appConfig config.Config
 )
 
 func init() {
-	appLogger = logger.New(os.Stdout)
+	appLogger = logger.New(os.Stdout, logger.InfoLevel)
 
-	if err := yaml.Unmarshal([]byte(os.Getenv(config.CONFIG_ENV)), &appConfig); err != nil {
-		appLogger.Fatal("Error config yaml.Unmarshal():", "err", err)
-	}
-	if len(appConfig.MirrorConfigs) == 0 {
-		appLogger.Fatal("no mirror config found")
+	if err := env.Parse(&appConfig); err != nil {
+		appLogger.Fatal("Error env.Parse():", "err", err)
 	}
 
-	for _, cfg := range appConfig.MirrorConfigs {
-		mirrorTasks = append(mirrorTasks, mirror.New(&mirror.MirrorConfig{
-			Logger:     appLogger,
-			SrcRepoURL: os.Getenv(cfg.EnvSrcRepoURL),
-			SrcAuth:    config.NewNewPublicKeysOrNil(os.Getenv(cfg.EnvSrcSShKey)),
-			DstRepoURL: os.Getenv(cfg.EnvDstRepoURL),
-			DstAuth:    config.NewNewPublicKeysOrNil(os.Getenv(cfg.EnvDstSShKey)),
-		}))
+	if appConfig.Debug {
+		appLogger.SetLevel(logger.DebugLevel)
 	}
 }
 
 func main() {
-	for _, mirrorTask := range mirrorTasks {
-		fmt.Println()
-		if err := mirrorTask.Run(); err != nil {
-			appLogger.Warn("Error mirrorTask.Run():", "err", err)
-			errOccurred = true
-		}
-		fmt.Println()
+	app, err := mirror.New(
+		mirror.MirrorConfig{
+			RemoteURL:     appConfig.SrcRemoteURL,
+			SSHKey:        appConfig.SrcSShKey,
+			HostKey:       appConfig.SrcKnownHost,
+			IgnoreHostKey: appConfig.SrcIgnoreHostKey,
+			Username:      appConfig.SrcUsername,
+			Password:      appConfig.SrcPassword,
+		},
+		mirror.MirrorConfig{
+			RemoteURL:     appConfig.DstRemoteURL,
+			SSHKey:        appConfig.DstSShKey,
+			HostKey:       appConfig.DstKnownHost,
+			IgnoreHostKey: appConfig.DstIgnoreHostKey,
+			Username:      appConfig.DstUsername,
+			Password:      appConfig.DstPassword,
+		},
+		appLogger,
+	)
+	if err != nil {
+		appLogger.Fatal("Error mirror.New():", "err", err)
 	}
 
-	if errOccurred {
-		os.Exit(1)
+	if err := app.Run(); err != nil {
+		appLogger.Fatal("Error app.Run():", "err", err)
 	}
 }
