@@ -3,17 +3,17 @@ package config
 type Config struct {
 	Debug bool `env:"DEBUG" envDefault:"false"`
 
-	SrcRemoteURL     string `env:"src_remote_url,required"`
-	SrcSShKey        string `env:"src_ssh_key"`
-	SrcKnownHost     string `env:"src_known_host"`
-	SrcIgnoreHostKey bool   `env:"src_ignore_host_key"`
-	SrcUsername      string `env:"src_user_name"`
-	SrcPassword      string `env:"src_password"`
+	SrcRemoteURL     string `env:"INPUT_SRC_REMOTE_URL,required"`
+	SrcSShKey        string `env:"INPUT_SRC_SSH_KEY"`
+	SrcKnownHost     string `env:"INPUT_SRC_KNOWN_HOST"`
+	SrcIgnoreHostKey bool   `env:"INPUT_SRC_IGNORE_HOST_KEY"`
+	SrcUsername      string `env:"INPUT_SRC_USERNAME"`
+	SrcPassword      string `env:"INPUT_SRC_PASSWORD"`
 
-	DstRemoteURL     string `env:"dst_remote_url,required"`
-	DstSShKey        string `env:"dst_ssh_key"`
-	DstKnownHost     string `env:"dst_known_host"`
-	DstIgnoreHostKey bool   `env:"dst_ignore_host_key"`
-	DstUsername      string `env:"dst_user_name"`
-	DstPassword      string `env:"dst_password"`
+	DstRemoteURL     string `env:"INPUT_DST_REMOTE_URL,required"`
+	DstSShKey        string `env:"INPUT_DST_SSH_KEY"`
+	DstKnownHost     string `env:"INPUT_DST_KNOWN_HOST"`
+	DstIgnoreHostKey bool   `env:"INPUT_DST_IGNORE_HOST_KEY"`
+	DstUsername      string `env:"INPUT_DST_USERNAME"`
+	DstPassword      string `env:"INPUT_DST_PASSWORD"`
 }

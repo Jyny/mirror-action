@@ -1,0 +1,39 @@
+name: "Mirroring git repo"
+description: mirror a git repository as source to another git repository as destination
+branding:
+  icon: refresh-cw
+  color: green
+
+inputs:
+  SRC_REMOTE_URL:
+    description: 'The source git repository'
+    required: true
+  SRC_SSH_KEY:
+    description: 'The ssh key for access the source git repository'
+  SRC_KNOWN_HOST:
+    description: 'The known host for access the source git repository'
+  SRC_IGNORE_HOST_KEY: 
+    description: 'Ignore the host key check during access the source git repository'
+    default: 'false'
+  SRC_USERNAME:
+    description: 'The username for access the source git repository'
+  SRC_PASSWORD:
+    description: 'The password for access the source git repository'
+  DST_REMOTE_URL:
+    description: 'The destination git repository'
+    required: true
+  DST_SSH_KEY:
+    description: 'The ssh key for access the destination git repository'
+  DST_KNOWN_HOST:
+    description: 'The known host for access the destination git repository'
+  DST_IGNORE_HOST_KEY:
+    description: 'Ignore the host key check during access the destination git repository'
+    default: 'false'
+  DST_USERNAME:
+    description: 'The username for access the destination git repository'
+  DST_PASSWORD:
+    description: 'The password for access the destination git repository'
+  
+runs:
+  using: "docker"
+  image: 'Dockerfile'
