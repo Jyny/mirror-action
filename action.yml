@@ -1,7 +1,7 @@
 name: "Mirroring git repo"
-description: mirror a git repository as source to another git repository as destination
+description: GitHub Action for mirroring git repository that Support sync from/to private repository
 branding:
-  icon: refresh-cw
+  icon: refresh-ccw
   color: green
 
 inputs:
