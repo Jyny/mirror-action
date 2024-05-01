@@ -1,7 +1,8 @@
 package config
 
 type Config struct {
-	Debug bool `env:"DEBUG" envDefault:"false"`
+	Debug   bool   `env:"DEBUG" envDefault:"false"`
+	RefSpec string `env:"REF_SPEC" envDefault:"+refs/heads/*:refs/heads/*"`
 
 	SrcRemoteURL     string `env:"INPUT_SRC_REMOTE_URL,required"`
 	SrcSShKey        string `env:"INPUT_SRC_SSH_KEY"`

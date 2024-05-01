@@ -44,6 +44,7 @@ func main() {
 			Username:      appConfig.DstUsername,
 			Password:      appConfig.DstPassword,
 		},
+		appConfig.RefSpec,
 		appLogger,
 	)
 	if err != nil {
