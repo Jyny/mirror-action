@@ -30,7 +30,7 @@ type MirrorConfig struct {
 	Password string
 }
 
-func New(src, dst MirrorConfig, logger logger.Logger) (*Mirror, error) {
+func New(src, dst MirrorConfig, refSpec string, logger logger.Logger) (*Mirror, error) {
 	logger.Debug("Source:", "remote url", src.RemoteURL)
 	if !validGitURL(src.RemoteURL) {
 		logger.Error("validate source remote url", "err", ErrInvalidGitRemoteURL)
