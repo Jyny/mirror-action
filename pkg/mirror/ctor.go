@@ -4,6 +4,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing/transport"
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
@@ -48,6 +49,7 @@ func New(src, dst MirrorConfig, refSpec string, logger logger.Logger) (*Mirror, 
 		srcAuth:   newAuthMethodOrNil(&src),
 		dstRemote: dst.RemoteURL,
 		dstAuth:   newAuthMethodOrNil(&dst),
+		refSpec:   config.RefSpec(refSpec),
 		logger:    logger,
 	}, nil
 }
