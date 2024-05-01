@@ -19,7 +19,7 @@ type Mirror struct {
 	srcAuth   transport.AuthMethod
 	dstRemote string
 	dstAuth   transport.AuthMethod
-	refSpec   string
+	refSpec   config.RefSpec
 	logger    logger.Logger
 }
 
@@ -53,7 +53,7 @@ func (m *Mirror) Run() error {
 		RemoteName: MirrorRemoteName,
 		Auth:       m.dstAuth,
 		Progress:   m.logger,
-		RefSpecs:   []config.RefSpec{config.RefSpec(m.refSpec)},
+		RefSpecs:   []config.RefSpec{m.refSpec},
 	})
 	if err != nil && !errors.Is(err, git.NoErrAlreadyUpToDate) {
 		m.logger.Error("failed to push", "err", err)
