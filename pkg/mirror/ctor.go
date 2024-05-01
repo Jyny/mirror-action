@@ -48,6 +48,7 @@ func New(src, dst MirrorConfig, refSpec string, logger logger.Logger) (*Mirror, 
 		srcAuth:   newAuthMethodOrNil(&src),
 		dstRemote: dst.RemoteURL,
 		dstAuth:   newAuthMethodOrNil(&dst),
+		refSpec:   refSpec,
 		logger:    logger,
 	}, nil
 }
