@@ -22,4 +22,5 @@ jobs:
             DST_REMOTE_URL: ${{ vars.DST_REMOTE_URL }}
             DST_SSH_KEY: ${{ secrets.DST_SSH_KEY }}
             DST_IGNORE_HOST_KEY: true
+            REF_SPEC: +refs/heads/*:refs/heads/*
 ```
