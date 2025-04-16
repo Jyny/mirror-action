@@ -1,12 +1,13 @@
 module github.com/jyny/mirror-action
 
 go 1.21.6
+toolchain go1.24.1
 
 require (
 	github.com/caarlos0/env v3.5.0+incompatible
 	github.com/charmbracelet/log v0.3.1
 	github.com/go-git/go-git/v5 v5.11.0
-	golang.org/x/crypto v0.21.0
+	golang.org/x/crypto v0.36.0
 )
 
 require (
@@ -38,9 +39,9 @@ require (
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
 	golang.org/x/mod v0.13.0 // indirect
-	golang.org/x/net v0.23.0 // indirect
+	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sync v0.5.0 // indirect
-	golang.org/x/sys v0.18.0 // indirect
+	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/tools v0.14.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
